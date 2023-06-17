@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // mode: 'jit',
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -22,6 +23,7 @@ module.exports = {
         'gray-8': 'rgb(38, 38, 38)',
         'dark-gray-8': 'rgb(219, 219, 219)',
         'brand-orange': 'rgb(255 161 22)',
+        'brand-orange-h': 'rgb(238, 147, 15)',
         'brand-orange-s': 'rgb(193, 122, 15)',
         'dark-yellow': 'rgb(255 192 30)',
         'dark-pink': 'rgb(255 55 95)',
