@@ -106,7 +106,7 @@ const Signup: React.FC<SignupProps> = () => {
           type="submit"
           className="w-full text-white tracking-wider focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center bg-slate-700 hover:bg-slate-500 uppercase transition-all duration-200"
         >
-          Register
+          {loading ? 'Signing up...' : 'Register'}
         </button>
       </div>
       <div className="text-lg font-medium text-center text-gray-100">
