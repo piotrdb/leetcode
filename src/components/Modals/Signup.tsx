@@ -1,8 +1,15 @@
 import React from 'react';
+import { useSetRecoilState } from 'recoil';
+import { authModalState, AuthModalType } from '../atoms/authModalAtom';
 
 type SignupProps = {};
 
 const Signup: React.FC<SignupProps> = () => {
+  const setAuthModalState = useSetRecoilState(authModalState);
+  const handleClick = (type: AuthModalType) => {
+    setAuthModalState((prev) => ({ ...prev, type }));
+  };
+
   return (
     <form className="space-y-6 px-6 pb-4">
       <h3 className="text-xl tracking-wider text-center font-medium text-white cursor-default">
@@ -65,6 +72,7 @@ const Signup: React.FC<SignupProps> = () => {
         <a
           href="#"
           className="text-lg inline-block ml-2 text-blue-500 hover:underline w-full-text-right"
+          onClick={() => handleClick('login')}
         >
           Log in
         </a>
