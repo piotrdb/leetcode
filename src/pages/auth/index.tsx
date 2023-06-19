@@ -1,4 +1,4 @@
-import Navbar from '@/src/components/Navbar/Navbar';
+import Navbar from '@/src/components/Navbar';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import AuthModal from '@/src/components/Modals/AuthModal';

@@ -1,6 +1,5 @@
 import ProblemsTable from '../components/ProblemsTable/ProblemsTable';
 import TopBar from '../components/TopBar/Topbar';
-import { problems } from '../mockProblems/problems';
 
 export default function Home() {
   return (
