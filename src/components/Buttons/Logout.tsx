@@ -3,6 +3,7 @@ import { sign } from 'crypto';
 import React from 'react';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { FiLogOut } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 type LogoutProps = {};
 
@@ -11,6 +12,11 @@ const Logout: React.FC<LogoutProps> = () => {
 
   const handleLogout = () => {
     signOut();
+    return toast.success('Logged out', {
+      position: 'top-center',
+      autoClose: 3000,
+      theme: 'dark',
+    });
   };
 
   return (
