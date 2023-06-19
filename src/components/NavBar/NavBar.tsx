@@ -2,11 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSetRecoilState } from 'recoil';
-import { authModalState } from './atoms/authModalAtom';
+import { authModalState } from '../../atoms/authModalAtom';
 
-type NavbarProps = {};
+type NavBarProps = {};
 
-const Navbar: React.FC<NavbarProps> = () => {
+const NavBar: React.FC<NavBarProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const handleClick = () => {
     setAuthModalState((prev) => ({ ...prev, isOpen: true }));
@@ -37,4 +37,4 @@ const Navbar: React.FC<NavbarProps> = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;

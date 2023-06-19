@@ -3,7 +3,7 @@ import { CgClose } from 'react-icons/cg';
 import Login from './Login';
 import Signup from './Signup';
 import ResetPassword from './ResetPassword';
-import { authModalState } from '../atoms/authModalAtom';
+import { authModalState } from '../../atoms/authModalAtom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 type AuthModalProps = {};

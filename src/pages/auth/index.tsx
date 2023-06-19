@@ -1,11 +1,11 @@
-import Navbar from '@/src/components/Navbar';
-import React, { useEffect } from 'react';
+import Navbar from '@/src/components/Navbar/Navbar';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import AuthModal from '@/src/components/Modals/AuthModal';
-import { authModalState } from '@/src/components/atoms/authModalAtom';
+import { authModalState } from '@/src/atoms/authModalAtom';
 import { useRecoilValue } from 'recoil';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/src/components/firebase/firebase';
+import { auth } from '@/src/firebase/firebase';
 import { useRouter } from 'next/router';
 
 type AuthPageProps = {};
@@ -13,13 +13,21 @@ type AuthPageProps = {};
 const AuthPage: React.FC<AuthPageProps> = () => {
   const authModal = useRecoilValue(authModalState);
   const [user, loading, error] = useAuthState(auth);
+  const [pageLoading, setPageLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     if (user) {
       router.push('/');
     }
-  }, [user, router]);
+    if (!loading && !user) {
+      setPageLoading(false);
+    }
+  }, [user, router, loading]);
+
+  if (pageLoading) {
+    return null;
+  }
 
   return (
     <div className="bg-gradient-to-b from-gray-500 to-gray-800 h-screen relative">
