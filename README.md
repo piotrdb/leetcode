@@ -9,8 +9,10 @@
 - TailwindCSS
 
 ### Libraries
+
 - Firebase Hooks
 - Recoil
 - React-Toastify
 - React-Youtube
 - React-Icons
+- React-Split
