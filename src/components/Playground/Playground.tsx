@@ -1,5 +1,6 @@
 import React from 'react';
 import PreferencesNavBar from './PreferencesNavBar/PreferencesNavBar';
+import PlaygroundFooter from './PlaygroundFooter/PlaygroundFooter';
 import Split from 'react-split';
 import CodeMirror from '@uiw/react-codemirror';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
@@ -8,8 +9,12 @@ import { javascript } from '@codemirror/lang-javascript';
 type PlaygroundProps = {};
 
 const Playground: React.FC<PlaygroundProps> = () => {
+  const boilerPlate = `function twoSum(nums, target){
+  //Write your code here
+  };`;
+
   return (
-    <div className="flex flex-col bg-dark-layer-1 relative">
+    <div className="flex flex-col bg-dark-layer-1 relative overflow-x-auto">
       <PreferencesNavBar />
       <Split
         className="h-[calc(100vh-106px)]"
@@ -19,13 +24,13 @@ const Playground: React.FC<PlaygroundProps> = () => {
       >
         <div className="w-full overflow-auto">
           <CodeMirror
-            value="const a = 1"
+            value={boilerPlate}
             theme={vscodeDark}
             extensions={[javascript()]}
             style={{ fontSize: 16 }}
           />
         </div>
-        <div className="w-full px-5 overflow-auto">
+        <div className="w-full px-5 pb-14 overflow-auto">
           <div className="flex h-10 items-center space-x-6">
             <div className="relative flex h-full flex-col justify-center cursor-pointer">
               <div className="text-md font-medium leading-5 text-white capitalize">
@@ -73,6 +78,7 @@ const Playground: React.FC<PlaygroundProps> = () => {
           </div>
         </div>
       </Split>
+      <PlaygroundFooter />
     </div>
   );
 };
