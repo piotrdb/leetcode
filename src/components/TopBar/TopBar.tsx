@@ -83,7 +83,7 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
               />
               <div
                 className="absolute top-14 left-2/4 -translate-x-2/4 mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg z-40 group-hover:scale-100 scale-0 
-                transition-all duration-300 ease-in-out"
+                transition-all duration-300 ease-in-out font-medium"
               >
                 <p className="text-md">{user.email}</p>
               </div>

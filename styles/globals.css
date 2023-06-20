@@ -3,6 +3,21 @@
 @tailwind utilities;
 
 
+@layer components {
+	.preferenceBtn {
+		@apply relative rounded px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex  ml-auto p-1 mr-2 hover:bg-dark-fill-3;
+	}
+
+	.preferenceBtn-tooltip {
+		@apply absolute w-auto p-2 text-sm m-2 mt-[1.9rem]  min-w-max translate-x-3  right-0 top-5 z-10
+		bg-dark-layer-1 text-brand-orange rounded shadow-lg  origin-center scale-0 transition-all duration-100 ease-linear group-hover:scale-100;
+	}
+
+	.caseNumber {
+		@apply font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap
+	}
+}
+
 .split {
     display: flex;
     flex-direction: row;

@@ -16,3 +16,4 @@
 - React-Youtube
 - React-Icons
 - React-Split
+- React-Codemirror
