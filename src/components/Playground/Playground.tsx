@@ -25,7 +25,7 @@ const Playground: React.FC<PlaygroundProps> = () => {
             style={{ fontSize: 16 }}
           />
         </div>
-        <div className="w-full px-5 overflow auto">
+        <div className="w-full px-5 overflow-auto">
           <div className="flex h-10 items-center space-x-6">
             <div className="relative flex h-full flex-col justify-center cursor-pointer">
               <div className="text-md font-medium leading-5 text-white capitalize">
@@ -55,6 +55,20 @@ const Playground: React.FC<PlaygroundProps> = () => {
                   <div className="caseNumber">CASE 3</div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="font-semibold my-4">
+            <p className="text-md font-medium mt-4 text-white capitalize">
+              input:
+            </p>
+            <div className="w-full capitalize cursor-text rounded-lg border mt-2 px-3 py-[10px] bg-dark-fill-3 border-transparent text-white">
+              nums: [2,7,11,15], target: 9
+            </div>
+            <p className="text-md font-medium mt-4 text-white capitalize">
+              output:
+            </p>
+            <div className="w-full capitalize cursor-text rounded-lg border mt-2 px-3 py-[10px] bg-dark-fill-3 border-transparent text-white">
+              [0,1]
             </div>
           </div>
         </div>
