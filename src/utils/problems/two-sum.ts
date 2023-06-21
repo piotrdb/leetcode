@@ -1,7 +1,8 @@
 import assert from "assert";
 import { Problem } from '../types/problem'
 
-const starterCodeTwoSum = `function twoSum(nums,target){
+const starterCodeTwoSum = `// Do not edit function name
+function twoSum(nums,target){
   // Write your code here
 };`;
 
