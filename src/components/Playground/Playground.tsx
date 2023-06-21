@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PreferencesNavBar from './PreferencesNavBar/PreferencesNavBar';
 import PlaygroundFooter from './PlaygroundFooter/PlaygroundFooter';
 import Split from 'react-split';
@@ -12,6 +12,8 @@ type PlaygroundProps = {
 };
 
 const Playground: React.FC<PlaygroundProps> = ({ problem }) => {
+  const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
+
   return (
     <div className="flex flex-col bg-dark-layer-1 relative overflow-x-auto">
       <PreferencesNavBar />
@@ -39,40 +41,40 @@ const Playground: React.FC<PlaygroundProps> = ({ problem }) => {
             </div>
           </div>
           <div className="flex">
-            <div className="mr-2 items-start mt-2 text-white">
-              <div className="flex items-center">
-                <div className="flex flex-wrap items-center gap-y-4">
-                  <div className="caseNumber">CASE 1</div>
+            {problem.examples.map((example, index) => (
+              <div
+                className="mr-2 items-start mt-2 text-white"
+                key={example.id}
+                onClick={() => setActiveTestCaseId(example.id)}
+              >
+                <div className="flex items-center">
+                  <div className="flex flex-wrap items-center gap-y-4">
+                    <div
+                      className={`caseNumber ${
+                        index === activeTestCaseId
+                          ? 'bg-dark-fill-2 text-white'
+                          : ''
+                      }`}
+                    >
+                      Case {index + 1}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="mr-2 items-start mt-2 text-white">
-              <div className="flex items-center">
-                <div className="flex flex-wrap items-center gap-y-4">
-                  <div className="caseNumber">CASE 2</div>
-                </div>
-              </div>
-            </div>
-            <div className="mr-2 items-start mt-2 text-white">
-              <div className="flex items-center">
-                <div className="flex flex-wrap items-center gap-y-4">
-                  <div className="caseNumber">CASE 3</div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
           <div className="font-semibold my-4">
-            <p className="text-md font-medium mt-4 text-white capitalize">
+            <p className="text-lg font-medium mt-4 text-white capitalize">
               input:
             </p>
-            <div className="w-full capitalize cursor-text rounded-lg border mt-2 px-3 py-[10px] bg-dark-fill-3 border-transparent text-white">
-              nums: [2,7,11,15], target: 9
+            <div className="w-full text-md cursor-text rounded-lg border mt-2 px-3 py-[10px] bg-dark-fill-3 border-transparent text-white">
+              {problem.examples[activeTestCaseId].inputText}
             </div>
-            <p className="text-md font-medium mt-4 text-white capitalize">
+            <p className="text-lg font-medium mt-4 text-white capitalize">
               output:
             </p>
-            <div className="w-full capitalize cursor-text rounded-lg border mt-2 px-3 py-[10px] bg-dark-fill-3 border-transparent text-white">
-              [0,1]
+            <div className="w-full text-md capitalize cursor-text rounded-lg border mt-2 px-3 py-[10px] bg-dark-fill-3 border-transparent text-white">
+              {problem.examples[activeTestCaseId].outputText}
             </div>
           </div>
         </div>
