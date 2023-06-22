@@ -2,13 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { BsCheckCircle } from 'react-icons/bs';
 import { AiFillYoutube } from 'react-icons/ai';
 import { CgClose } from 'react-icons/cg';
-import { problems } from '../../mockProblems/problems';
 import Link from 'next/link';
 import YouTube from 'react-youtube';
+import { collection, query, orderBy, getDocs } from 'firebase/firestore';
+import { firestore } from '@/src/firebase/firebase';
+import { DBProblem, Problem } from '@/src/utils/types/problem';
 
-type ProblemsTableProps = {};
+type ProblemsTableProps = {
+  setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const ProblemsTable: React.FC<ProblemsTableProps> = () => {
+const ProblemsTable: React.FC<ProblemsTableProps> = ({
+  setLoadingProblems,
+}) => {
+  const problems = useGetProblems(setLoadingProblems);
+
   const [ytPlayer, setYtPlayer] = useState({
     isOpen: false,
     videoId: '',
@@ -106,3 +114,30 @@ const ProblemsTable: React.FC<ProblemsTableProps> = () => {
 };
 
 export default ProblemsTable;
+
+function useGetProblems(
+  setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  const [problems, setProblems] = useState<DBProblem[]>([]);
+
+  useEffect(() => {
+    const getProblems = async () => {
+      setLoadingProblems(true);
+      const q = query(
+        collection(firestore, 'problems'),
+        orderBy('order', 'asc')
+      );
+      const temp: DBProblem[] = [];
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        temp.push({ id: doc.id, ...doc.data() } as DBProblem);
+      });
+      setProblems(temp);
+      setLoadingProblems(false);
+    };
+
+    getProblems();
+  }, [setLoadingProblems]);
+
+  return problems;
+}
