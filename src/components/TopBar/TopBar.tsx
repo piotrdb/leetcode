@@ -71,7 +71,7 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
               </button>
             </Link>
           )}
-          {problemPage && <Timer />}
+          {user && problemPage && <Timer />}
           {user && (
             <div className="cursor-pointer group relative">
               <Image
