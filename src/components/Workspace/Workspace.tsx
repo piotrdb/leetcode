@@ -1,6 +1,6 @@
 import React from 'react';
 import Split from 'react-split';
-import ProblemDescription from '../ProblemDescription/ProblemDescription';
+import ProblemDescription from './ProblemDescription/ProblemDescription';
 import Playground from '../Playground/Playground';
 import { Problem } from '@/src/utils/types/problem';
 

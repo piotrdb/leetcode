@@ -12,7 +12,7 @@ interface ProblemMap{
 export const problemsArray: ProblemMap = {
     "two-sum": twoSum,
     "jump-game": jumpGame,
-    "search-2d-matrix": search2DMatrix,
+    "search-a-2d-matrix": search2DMatrix,
     "valid-parentheses": validParentheses,
     "reverse-linked-list": reverseLinkedList,
 }
