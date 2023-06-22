@@ -6,7 +6,7 @@ import Link from 'next/link';
 import YouTube from 'react-youtube';
 import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 import { firestore } from '@/src/firebase/firebase';
-import { DBProblem, Problem } from '@/src/utils/types/problem';
+import { DBProblem } from '@/src/utils/types/problem';
 
 type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
@@ -54,12 +54,28 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                 <BsCheckCircle fontSize="18" width="18" />
               </th>
               <td className="px-6 py-4">
-                <Link
-                  className="hover:text-blue-600 cursor-pointer"
-                  href={`/problems/${problem.id}`}
-                >
-                  {problem.title}
-                </Link>
+                {problem.link ? (
+                  <Link
+                    href={problem.link}
+                    target="_blank"
+                    className="group relative transition-all duration-300 hover:text-blue-600 cursor-pointer"
+                  >
+                    {problem.title}
+                    <div
+                      className="absolute top-0 -translate-x-[110%] translate-y-[-25%] mx-auto w-[180px] text-md text-center bg-brand-orange-h text-dark-layer-1 p-2 rounded shadow-lg z-40 group-hover:scale-100 scale-0 
+                transition-all duration-300 ease-in-out font-medium"
+                    >
+                      <p className="text-md">Go to LeetCode.com</p>
+                    </div>
+                  </Link>
+                ) : (
+                  <Link
+                    className="hover:text-blue-600 cursor-pointer transition-all duration-300"
+                    href={`/problems/${problem.id}`}
+                  >
+                    {problem.title}
+                  </Link>
+                )}
               </td>
               <td className={`px-6 py-4 ${difficultyColor}`}>
                 {problem.difficulty}
