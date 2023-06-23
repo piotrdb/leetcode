@@ -15,7 +15,6 @@ import {
   AiOutlineLike,
   AiOutlineDislike,
 } from 'react-icons/ai';
-import { GiSandsOfTime } from 'react-icons/gi';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { TiStarFullOutline, TiStarOutline } from 'react-icons/ti';
 import RectangleSkeleton from '../../Skeletons/CircleSkeleton';
@@ -205,6 +204,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
 
     setUpdating(false);
   };
+
   return (
     <div className="bg-dark-layer-1">
       <div className="flex h-14 w-full items-center pt-2 bg-dark-layer-2 text-white overflow-x-hidden">
