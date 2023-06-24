@@ -24,9 +24,13 @@ import { toast } from 'react-toastify';
 
 type ProblemDescriptionProps = {
   problem: Problem;
+  _solved: boolean;
 };
 
-const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
+const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
+  problem,
+  _solved,
+}) => {
   const [user] = useAuthState(auth);
   const [updating, setUpdating] = useState(false);
 
@@ -233,7 +237,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem }) => {
                   {currentProblem.difficulty}
                 </div>
                 <div className="rounded p-[3px] ml-4 text-2xl transition-colors duration-200 text-green-s text-dark-green-s">
-                  {solved ? (
+                  {solved || _solved ? (
                     <BsCheck2Circle />
                   ) : (
                     <BsCheck2Circle color="gray" />
@@ -375,22 +379,23 @@ function useGetUserProblemData(problemId: string) {
         setUsersData({
           liked: likedProblems.includes(problemId),
           disliked: dislikedProblems.includes(problemId),
-          starred: starredProblems.include(problemId),
+          starred: starredProblems.includes(problemId),
           solved: solvedProblems.includes(problemId),
         });
       }
-      if (user) {
-        getUsersProblemData();
-      }
-
-      return () =>
-        setUsersData({
-          liked: false,
-          disliked: false,
-          starred: false,
-          solved: false,
-        });
     };
+
+    if (user) {
+      getUsersProblemData();
+    }
+
+    return () =>
+      setUsersData({
+        liked: false,
+        disliked: false,
+        starred: false,
+        solved: false,
+      });
   }, [problemId, user]);
 
   return { ...usersData, setUsersData };

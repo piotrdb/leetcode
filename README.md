@@ -10,11 +10,12 @@
 
 ### Libraries
 
-- Firebase Hooks
 - Recoil
-- React-Toastify
-- React-Youtube
-- React-Icons
-- React-Split
-- React-Codemirror
+- React Firebase Hooks
+- React Toastify
+- React Youtube
+- React Icons
+- React Split
+- React Codemirror
+- React Confetti
 - Assert

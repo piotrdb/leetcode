@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PreferencesNavBar from './PreferencesNavBar/PreferencesNavBar';
 import PlaygroundFooter from './PlaygroundFooter/PlaygroundFooter';
 import Split from 'react-split';
@@ -6,13 +6,100 @@ import CodeMirror from '@uiw/react-codemirror';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { javascript } from '@codemirror/lang-javascript';
 import { Problem } from '@/src/utils/types/problem';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, firestore } from '@/src/firebase/firebase';
+import { toast } from 'react-toastify';
+import { problemsArray } from '@/src/utils/problems';
+import { useRouter } from 'next/router';
+import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 
 type PlaygroundProps = {
   problem: Problem;
+  setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setSolved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Playground: React.FC<PlaygroundProps> = ({ problem }) => {
-  const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
+const Playground: React.FC<PlaygroundProps> = ({
+  problem,
+  setSuccess,
+  setSolved,
+}) => {
+  const [activeTestCaseId, setActiveTestCaseId] = useState<number>(1);
+  let [userCode, setUserCode] = useState<string>(problem.starterCode);
+  const [user] = useAuthState(auth);
+  const {
+    query: { pid },
+  } = useRouter();
+
+  const handleSubmit = async () => {
+    if (!user) {
+      toast.error('Please login to submit your code', {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'dark',
+      });
+      return;
+    }
+    try {
+      userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
+      const cb = new Function(`return ${userCode}`)();
+      const handler = problemsArray[pid as string].handlerFunction;
+
+      if (typeof handler === 'function') {
+        const success = handler(cb);
+        if (success) {
+          toast.success('Congrats! All tests passed!', {
+            position: 'top-center',
+            autoClose: 3000,
+            theme: 'dark',
+          });
+          setSuccess(true);
+          setTimeout(() => {
+            setSuccess(false);
+          }, 4000);
+
+          const userRef = doc(firestore, 'users', user.uid);
+          await updateDoc(userRef, {
+            solvedProblems: arrayUnion(pid),
+          });
+          setSolved(true);
+        }
+      }
+    } catch (error: any) {
+      console.log(error.message);
+      if (
+        error.message.startsWith(
+          'AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:'
+        )
+      ) {
+        toast.error('One or more test cases failed!', {
+          position: 'top-center',
+          autoClose: 3000,
+          theme: 'dark',
+        });
+      } else {
+        toast.error(error.message, {
+          position: 'top-center',
+          autoClose: 3000,
+          theme: 'dark',
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const code = localStorage.getItem(`code-${pid}`);
+    if (user) {
+      setUserCode(code ? JSON.parse(code) : problem.starterCode);
+    } else {
+      setUserCode(problem.starterCode);
+    }
+  }, [pid, user, problem.starterCode]);
+
+  const onChange = (value: string) => {
+    setUserCode(value);
+    localStorage.setItem(`code-${pid}`, JSON.stringify(value));
+  };
 
   return (
     <div className="flex flex-col bg-dark-layer-1 relative overflow-x-auto">
@@ -29,6 +116,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem }) => {
             theme={vscodeDark}
             extensions={[javascript()]}
             style={{ fontSize: 16 }}
+            onChange={onChange}
           />
         </div>
         <div className="w-full px-5 pb-14 overflow-auto">
@@ -45,7 +133,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem }) => {
               <div
                 className="mr-2 items-start mt-2 text-white"
                 key={example.id}
-                onClick={() => setActiveTestCaseId(example.id)}
+                onClick={() => setActiveTestCaseId(index)}
               >
                 <div className="flex items-center">
                   <div className="flex flex-wrap items-center gap-y-4">
@@ -79,9 +167,12 @@ const Playground: React.FC<PlaygroundProps> = ({ problem }) => {
           </div>
         </div>
       </Split>
-      <PlaygroundFooter />
+      <PlaygroundFooter handleSubmit={handleSubmit} />
     </div>
   );
 };
 
 export default Playground;
+function setSolved(arg0: boolean) {
+  throw new Error('Function not implemented.');
+}
