@@ -18,7 +18,7 @@ type TopBarProps = {
 };
 
 const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
-  const [user] = useAuthState(auth);
+  const [user, userLoading] = useAuthState(auth);
   const router = useRouter();
   const setAuthModalState = useSetRecoilState(authModalState);
 
@@ -88,7 +88,7 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
           </div>
         )}
         <div className="flex items-center space-x-4 flex-1 justify-end">
-          {!user && (
+          {!user && !userLoading && (
             <Link
               href="/auth"
               onClick={() => {

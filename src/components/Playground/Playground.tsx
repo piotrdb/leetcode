@@ -19,14 +19,27 @@ type PlaygroundProps = {
   setSolved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+export interface ISettings {
+  fontSize: string;
+  settingsModalOpen: boolean;
+  dropdownOpen: boolean;
+}
+
 const Playground: React.FC<PlaygroundProps> = ({
   problem,
   setSuccess,
   setSolved,
 }) => {
   const [activeTestCaseId, setActiveTestCaseId] = useState<number>(1);
-  let [userCode, setUserCode] = useState<string>(problem.starterCode);
+  const [settings, setSettings] = useState({
+    fontSize: '16px',
+    settingsModalOpen: false,
+    dropdownOpen: false,
+  });
   const [user] = useAuthState(auth);
+
+  let [userCode, setUserCode] = useState<string>(problem.starterCode);
+
   const {
     query: { pid },
   } = useRouter();
@@ -103,7 +116,7 @@ const Playground: React.FC<PlaygroundProps> = ({
 
   return (
     <div className="flex flex-col bg-dark-layer-1 relative overflow-x-auto">
-      <PreferencesNavBar />
+      <PreferencesNavBar settings={settings} setSettings={setSettings} />
       <Split
         className="h-[calc(100vh-106px)]"
         direction="vertical"
@@ -112,10 +125,10 @@ const Playground: React.FC<PlaygroundProps> = ({
       >
         <div className="w-full overflow-auto">
           <CodeMirror
-            value={problem.starterCode}
+            value={userCode}
             theme={vscodeDark}
             extensions={[javascript()]}
-            style={{ fontSize: 16 }}
+            style={{ fontSize: settings.fontSize }}
             onChange={onChange}
           />
         </div>

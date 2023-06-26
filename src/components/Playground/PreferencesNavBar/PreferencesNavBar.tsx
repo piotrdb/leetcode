@@ -4,17 +4,19 @@ import {
   AiOutlineFullscreenExit,
   AiOutlineSetting,
 } from 'react-icons/ai';
-// import { ISettings } from "../Playground";
-// import SettingsModal from "@/components/Modals/SettingsModal";
+
+import { ISettings } from '../Playground';
+import SettingsModal from '../../Modals/SettingsModal';
 
 type PreferencesNavBarProps = {
-  // settings: ISettings;
-  // setSettings: React.Dispatch<React.SetStateAction<ISettings>>;
+  settings: ISettings;
+  setSettings: React.Dispatch<React.SetStateAction<ISettings>>;
 };
 
-const PreferencesNavBar: React.FC<
-  PreferencesNavBarProps
-> = (/*{ setSettings, settings  }*/) => {
+const PreferencesNavBar: React.FC<PreferencesNavBarProps> = ({
+  setSettings,
+  settings,
+}) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const handleFullScreen = () => {
@@ -58,7 +60,7 @@ const PreferencesNavBar: React.FC<
       <div className="flex items-center m-2">
         <button
           className="preferenceBtn group"
-          // onClick={() => setSettings({ ...settings, settingsModalIsOpen: true })}
+          onClick={() => setSettings({ ...settings, settingsModalOpen: true })}
         >
           <div className="h-7 w-7 text-dark-gray-6 font-bold text-[1.75rem]">
             <AiOutlineSetting />
@@ -68,16 +70,20 @@ const PreferencesNavBar: React.FC<
 
         <button className="preferenceBtn group" onClick={handleFullScreen}>
           <div className="h-7 w-7 text-dark-gray-6 font-bold text-[1.75rem]">
-            {!isFullScreen ? (
-              <AiOutlineFullscreen />
-            ) : (
+            {isFullScreen ? (
               <AiOutlineFullscreenExit />
+            ) : (
+              <AiOutlineFullscreen />
             )}
           </div>
-          <div className="preferenceBtn-tooltip">Full Screen</div>
+          <div className="preferenceBtn-tooltip" onClick={handleFullScreen}>
+            Full Screen
+          </div>
         </button>
       </div>
-      {/* {settings.settingsModalIsOpen && <SettingsModal settings={settings} setSettings={setSettings} />} */}
+      {settings.settingsModalOpen && (
+        <SettingsModal settings={settings} setSettings={setSettings} />
+      )}
     </div>
   );
 };
