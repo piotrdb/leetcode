@@ -1,6 +1,6 @@
 import React from 'react';
 import TopBar from '@/src/components/TopBar/TopBar';
-import WorkSpace from '@/src/components/WorkSpace/WorkSpace';
+import WorkSpace from '../../components/WorkSpace/WorkSpace';
 import { problemsArray } from '../../utils/problems/index';
 import { Problem } from '@/src/utils/types/problem';
 import useHasMounted from '@/src/hooks/useHasMounted';
