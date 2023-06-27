@@ -21,6 +21,7 @@ import RectangleSkeleton from '../../Skeletons/CircleSkeleton';
 import CircleSkeleton from '../../Skeletons/RectangleSkeleton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 type ProblemDescriptionProps = {
   problem: Problem;
@@ -287,20 +288,23 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
               {problem.examples.map((example, index) => (
                 <div key={example.id}>
                   <p className="font-medium text-white text-lg">
-                    Example {example.id}
+                    Example {example.id + 1}
                   </p>
+                  {example.img && (
+                    <Image
+                      src={example.img}
+                      alt="example image"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="w-[100%] h-auto mt-3 rounded-xl"
+                    />
+                  )}
                   <div className="example-card">
                     <pre>
                       <strong className="text-white">Input: </strong>{' '}
                       {example.inputText} <br />
                       <strong>Output:</strong> {example.outputText} <br />
-                      {example.img && (
-                        <img
-                          src={example.img}
-                          alt="example image"
-                          className="my-3 rounded-md"
-                        />
-                      )}
                       {example.explanation && (
                         <p>
                           <strong>Explanation:</strong>
