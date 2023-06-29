@@ -1,4 +1,3 @@
-import NavBar from '@/src/components/NavBar/NavBar';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import AuthModal from '@/src/components/Modals/AuthModal';
@@ -7,6 +6,8 @@ import { useRecoilValue } from 'recoil';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/src/firebase/firebase';
 import { useRouter } from 'next/router';
+import TopBar from '@/src/components/TopBar/TopBar';
+import Particle from '@/src/components/Particle/Particle';
 
 type AuthPageProps = {};
 
@@ -30,12 +31,10 @@ const AuthPage: React.FC<AuthPageProps> = () => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-gray-500 to-gray-800 h-screen relative">
+    <div className="h-screen relative">
+      <TopBar />
       <div className="max-w-7xl mx-auto">
-        <NavBar />
-        <div className="flex items-center justify-center h-[calc(100vh-7rem)] pointer-events-none select-none">
-          <Image width={750} height="1" src="/hero.png" alt="hero img" />
-        </div>
+        <Particle />
         {authModal.isOpen && <AuthModal />}
       </div>
     </div>
