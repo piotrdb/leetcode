@@ -53,13 +53,14 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
           !problemPage ? 'max-w-[1200px] mx-auto' : ''
         }`}
       >
-        <Link href="/" className="h-[28px] flex-1">
+        <Link href="/" className="h-[38px] flex-1">
           <Image
-            src="/logo-full.png"
+            src="/logo.png"
             alt="Logo"
-            className="h-full"
-            height={100}
-            width={120}
+            className="w-auto h-[100%] bg-gray-300 rounded-2xl py-0.5 px-3 hover:scale-105 transition-all duration-300"
+            height={0}
+            width={0}
+            sizes="100vw"
           />
         </Link>
         {problemPage && (
