@@ -6,7 +6,7 @@ The application enables users to browse and solve various programming tasks from
 
 ## Demo link
 
-https://leetcode-me4e.vercel.app
+https://leetcode-orcin.vercel.app
 
 ## Requirements
 
