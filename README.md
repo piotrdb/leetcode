@@ -6,7 +6,7 @@ The application enables users to browse and solve various programming tasks from
 
 ## Demo link
 
-https://leetcode-me4e-48ziowovt-piotrdb.vercel.app/
+https://leetcode-me4e.vercel.app
 
 ## Requirements
 
@@ -34,6 +34,7 @@ To run the LeetCode Clone application on your local development environment, you
 - React Split
 - React Codemirror
 - React Confetti
+- React TS Particles
 - Assert
 
 ## Installation
