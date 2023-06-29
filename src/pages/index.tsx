@@ -14,11 +14,7 @@ export default function Home() {
   return (
     <main className="bg-dark-layer-2 min-h-screen">
       <TopBar />
-      <h1 className="text-2xl text-center text-gray-700 dark:text-gray-400 font-medium uppercase mt-10 mb-5">
-        &ldquo; QUALITY OVER QUANTITY &rdquo; 👇
-      </h1>
-
-      <div className="relative overflow-x-auto mx-auto px-6 pb-10">
+      <div className="relative overflow-x-auto mx-auto px-6 pb-10 mt-20">
         <table className="text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] mx-auto table-auto">
           <thead className="text-md text-gray-700 uppercase dark:text-gray-400 border-b ">
             <tr>
