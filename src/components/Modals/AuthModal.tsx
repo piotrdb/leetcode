@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { CgClose } from 'react-icons/cg';
+import { RiArrowGoBackFill } from 'react-icons/ri';
 import Login from './Login';
 import Signup from './Signup';
 import ResetPassword from './ResetPassword';
@@ -9,6 +10,10 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 type AuthModalProps = {};
 
 const AuthModal: React.FC<AuthModalProps> = () => {
+  const setAuthModalState = useSetRecoilState(authModalState);
+  const handleBackClick = () => {
+    setAuthModalState((prev) => ({ ...prev, type: 'login' }));
+  };
   const authModal = useRecoilValue(authModalState);
   const closeModal = useCloseModal();
 
@@ -20,11 +25,23 @@ const AuthModal: React.FC<AuthModalProps> = () => {
       ></div>
       <div className="w-full sm:w-[450px]  absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]  flex justify-center items-center">
         <div className="relative w-full h-full mx-auto flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow relative w-full bg-gradient-to-b from-brand-orange to-brand-orange-h mx-6">
-            <div className="flex justify-end p-2" onClick={closeModal}>
+          <div className="bg-white rounded-lg shadow relative w-full bg-gradient-to-b from-[rgb(25,25,25)] to-[rgb(35,35,35)] mx-6">
+            <div className="flex justify-end p-2">
+              {authModal.type === 'forgotPassword' ? (
+                <button
+                  onClick={handleBackClick}
+                  type="button"
+                  className="bg-transparent rounded-lg text-sm p-1.5 mr-auto inline-flex items-center hover:bg-[rgb(55,55,55)] hover:text-white text-white transition-all duration-300"
+                >
+                  <RiArrowGoBackFill className="h-6 w-6" />
+                </button>
+              ) : (
+                <></>
+              )}
               <button
+                onClick={closeModal}
                 type="button"
-                className="bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-slate-700 hover:text-white text-white transition-all duration-300"
+                className="bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-[rgb(55,55,55)] hover:text-white text-white transition-all duration-300"
               >
                 <CgClose className="h-6 w-6" />
               </button>

@@ -90,20 +90,36 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
         )}
         <div className="flex items-center space-x-4 flex-1 justify-end">
           {!user && !userLoading && (
-            <Link
-              href="/auth"
-              onClick={() => {
-                setAuthModalState((prev) => ({
-                  ...prev,
-                  isOpen: true,
-                  type: 'login',
-                }));
-              }}
-            >
-              <button className="bg-dark-fill-3 py-1 px-2 cursor-pointer rounded ">
-                Sign In
-              </button>
-            </Link>
+            <>
+              <Link
+                href="/auth"
+                onClick={() => {
+                  setAuthModalState((prev) => ({
+                    ...prev,
+                    isOpen: true,
+                    type: 'login',
+                  }));
+                }}
+              >
+                <button className="bg-dark-fill-3 py-1.5 px-4 cursor-pointer rounded hover:bg-dark-fill-2 hover:rounded-xl duration-300 ">
+                  Sign In
+                </button>
+              </Link>
+              <Link
+                href="/auth"
+                onClick={() => {
+                  setAuthModalState((prev) => ({
+                    ...prev,
+                    isOpen: true,
+                    type: 'register',
+                  }));
+                }}
+              >
+                <button className="bg-dark-fill-3 py-1.5 px-4 cursor-pointer rounded hover:bg-dark-fill-2 hover:rounded-xl duration-300">
+                  Sign Up
+                </button>
+              </Link>
+            </>
           )}
           {user && problemPage && <Timer />}
           {user && (

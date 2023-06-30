@@ -54,7 +54,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
           type="email"
           name="email"
           id="email"
-          className="border-2 outline-none sm:text-sm md:text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-700 text-black transition-all duration-300"
+          className="border-2 outline-none sm:text-sm md:text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-[rgb(47,47,47)] border-gray-700 placeholder-gray-300 text-gray-100 transition-all duration-300"
           placeholder="name@company.com"
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -62,9 +62,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
 
       <button
         type="submit"
-        className="w-full tracking-wider text-white focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center bg-slate-700 hover:bg-slate-500 uppercase transition-all duration-200"
+        className="w-full tracking-wider text-white focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5 text-center bg-slate-700 hover:bg-slate-600 hover:shadow-2xl transition-all duration-200"
       >
-        Reset Password
+        Reset your password
       </button>
     </form>
   );
