@@ -48,7 +48,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               setSettings({ ...settings, settingsModalOpen: false })
             }
           >
-            <div className="fixed inset-0 bg-gray-8 opacity-60"></div>
+            <div className="fixed inset-0 bg-black opacity-30"></div>
           </div>
           <div className="my-8 inline-block min-w-full transform rounded-[13px] text-left transition-all bg-overlay-3 md:min-w-[420px] shadow-level4 shadow-lg p-0 bg-[rgb(40,40,40)] w-[600px] !overflow-visible opacity-100 scale-100">
             <div className="flex items-center border-b px-5 py-4 text-lg font-medium  border-dark-divider-border-2">
