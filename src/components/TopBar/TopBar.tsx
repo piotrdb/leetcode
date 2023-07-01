@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/src/firebase/firebase';
+import { auth, firestore } from '@/src/firebase/firebase';
 import Logout from '../Buttons/Logout';
 import { useSetRecoilState } from 'recoil';
 import { authModalState } from '@/src/atoms/authModalAtom';
@@ -12,6 +12,7 @@ import Timer from '../Timer/Timer';
 import { useRouter } from 'next/router';
 import { problemsArray } from '@/src/utils/problems';
 import { Problem } from '@/src/utils/types/problem';
+import { doc, getDoc } from 'firebase/firestore';
 
 type TopBarProps = {
   problemPage?: boolean;
@@ -21,6 +22,7 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
   const [user, userLoading] = useAuthState(auth);
   const router = useRouter();
   const setAuthModalState = useSetRecoilState(authModalState);
+  const displayName = useGetDisplayName();
 
   const handleProblemChange = (isForward: boolean) => {
     const { order } = problemsArray[router.query.pid as string] as Problem;
@@ -132,10 +134,10 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
                 width={100}
               />
               <div
-                className="absolute top-14 left-2/4 -translate-x-2/4 mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg z-40 group-hover:scale-100 scale-0 
+                className="absolute top-14 left-2/4 -translate-x-2/4 mx-auto bg-dark-layer-1 text-brand-orange py-2 px-4 rounded shadow-lg z-40 group-hover:scale-100 scale-0 
                 transition-all duration-300 ease-in-out font-medium"
               >
-                <p className="text-md">{user.email}</p>
+                <p className="text-md">{displayName}</p>
               </div>
             </div>
           )}
@@ -146,3 +148,25 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
   );
 };
 export default TopBar;
+
+function useGetDisplayName() {
+  const [displayName, setDisplayName] = useState<string>('');
+  const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    const getDisplayName = async () => {
+      const userRef = doc(firestore, 'users', user!.uid);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        setDisplayName(userDoc.data().displayName);
+      }
+    };
+
+    if (user) {
+      getDisplayName();
+    }
+  }, [user]);
+
+  return displayName;
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProblemsTable from '../components/ProblemsTable/ProblemsTable';
 import TopBar from '../components/TopBar/TopBar';
 import useHasMounted from '../hooks/useHasMounted';
@@ -16,6 +16,10 @@ export default function Home() {
   const setTableFilterState = useSetRecoilState(tableFilterState);
   const tfState = useRecoilValue(tableFilterState);
   const hasMounted = useHasMounted();
+
+  useEffect(() => {
+    setTableFilterState({ type: 'order', order: 'ascending' });
+  }, [setTableFilterState]);
 
   if (!hasMounted) {
     return null;

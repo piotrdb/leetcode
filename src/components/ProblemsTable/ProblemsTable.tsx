@@ -17,7 +17,6 @@ import { DBProblem } from '@/src/utils/types/problem';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRecoilValue } from 'recoil';
 import { tableFilterState } from '@/src/atoms/tableFilterAtom';
-import { table } from 'console';
 
 type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,7 +27,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
 }) => {
   const tableFilter = useRecoilValue(tableFilterState);
   const [tableProblems, setTableProblems] = useState<DBProblem[]>([]);
-  //
+
   const problems = useGetProblems(setLoadingProblems);
   const solvedProblems = useGetSolvedProblems();
   const [ytPlayer, setYtPlayer] = useState({
@@ -196,7 +195,6 @@ function useGetProblems(
   const [problems, setProblems] = useState<DBProblem[]>([]);
 
   useEffect(() => {
-    console.log('useGetProblems useEffect');
     const getProblems = async () => {
       setLoadingProblems(true);
       const q = query(
