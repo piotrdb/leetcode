@@ -10,6 +10,7 @@ import {
   BsSortNumericUp,
   BsSortUpAlt,
 } from 'react-icons/bs';
+import Filters from '../components/Filters/Filters';
 
 export default function Home() {
   const [loadingProblems, setLoadingProblems] = useState(true);
@@ -43,7 +44,8 @@ export default function Home() {
   return (
     <main className="bg-dark-layer-2 min-h-screen">
       <TopBar />
-      <div className="relative overflow-x-auto mx-auto px-6 pb-10 mt-20">
+      <div className="relative overflow-x-auto mx-auto px-6 pb-10">
+        <Filters />
         <table className="text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] mx-auto table-auto">
           <thead className="text-md text-gray-700 uppercase dark:text-gray-400 border-b ">
             <tr>
