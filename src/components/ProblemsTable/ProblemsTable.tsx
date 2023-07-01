@@ -22,14 +22,19 @@ type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+type TableFilter = {
+  type: 'order' | 'difficulty';
+  order: 'ascending' | 'descending';
+};
+
 const ProblemsTable: React.FC<ProblemsTableProps> = ({
   setLoadingProblems,
 }) => {
   const tableFilter = useRecoilValue(tableFilterState);
-  const [tableProblems, setTableProblems] = useState<DBProblem[]>([]);
-
   const problems = useGetProblems(setLoadingProblems);
   const solvedProblems = useGetSolvedProblems();
+  const tableProblems = useSortProblems(tableFilter, problems);
+
   const [ytPlayer, setYtPlayer] = useState({
     isOpen: false,
     videoId: '',
@@ -47,47 +52,6 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
-
-  useEffect(() => {
-    let temp: DBProblem[] = [];
-    const sortMap = {
-      Easy: 0,
-      Medium: 1,
-      Hard: 2,
-    };
-
-    if (tableFilter.type === 'order' && tableFilter.order === 'ascending') {
-      temp = [...problems].sort((a, b) =>
-        a.order > b.order ? 1 : b.order > a.order ? -1 : 0
-      );
-    } else if (
-      tableFilter.type === 'order' &&
-      tableFilter.order === 'descending'
-    ) {
-      temp = [...problems].sort((a, b) =>
-        a.order < b.order ? 1 : b.order < a.order ? -1 : 0
-      );
-    } else if (
-      tableFilter.type === 'difficulty' &&
-      tableFilter.order === 'ascending'
-    ) {
-      temp = [...problems].sort(
-        (a, b) =>
-          sortMap[a.difficulty as keyof typeof sortMap] -
-          sortMap[b.difficulty as keyof typeof sortMap]
-      );
-    } else if (
-      tableFilter.type === 'difficulty' &&
-      tableFilter.order === 'descending'
-    ) {
-      temp = [...problems].sort(
-        (a, b) =>
-          sortMap[b.difficulty as keyof typeof sortMap] -
-          sortMap[a.difficulty as keyof typeof sortMap]
-      );
-    }
-    setTableProblems(temp);
-  }, [problems, tableFilter]);
 
   return (
     <>
@@ -236,4 +200,51 @@ function useGetSolvedProblems() {
   }, [user]);
 
   return solvedProblems;
+}
+
+function useSortProblems(tableFilter: TableFilter, problems: DBProblem[]) {
+  const [tableProblems, setTableProblems] = useState<DBProblem[]>([]);
+
+  useEffect(() => {
+    let temp: DBProblem[] = [];
+    const sortMap = {
+      Easy: 0,
+      Medium: 1,
+      Hard: 2,
+    };
+
+    if (tableFilter.type === 'order' && tableFilter.order === 'ascending') {
+      temp = [...problems].sort((a, b) =>
+        a.order > b.order ? 1 : b.order > a.order ? -1 : 0
+      );
+    } else if (
+      tableFilter.type === 'order' &&
+      tableFilter.order === 'descending'
+    ) {
+      temp = [...problems].sort((a, b) =>
+        a.order < b.order ? 1 : b.order < a.order ? -1 : 0
+      );
+    } else if (
+      tableFilter.type === 'difficulty' &&
+      tableFilter.order === 'ascending'
+    ) {
+      temp = [...problems].sort(
+        (a, b) =>
+          sortMap[a.difficulty as keyof typeof sortMap] -
+          sortMap[b.difficulty as keyof typeof sortMap]
+      );
+    } else if (
+      tableFilter.type === 'difficulty' &&
+      tableFilter.order === 'descending'
+    ) {
+      temp = [...problems].sort(
+        (a, b) =>
+          sortMap[b.difficulty as keyof typeof sortMap] -
+          sortMap[a.difficulty as keyof typeof sortMap]
+      );
+    }
+    setTableProblems(temp);
+  }, [problems, tableFilter]);
+
+  return tableProblems;
 }
