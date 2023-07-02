@@ -222,7 +222,6 @@ function useFilterProblems(
 
   useEffect(() => {
     let filteredProblems: DBProblem[] = problems;
-    console.log(filterPattern.searchFilter);
     if (
       filterPattern.difficulties.length === 0 &&
       filterPattern.categories.length === 0 &&

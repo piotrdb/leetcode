@@ -79,7 +79,6 @@ const Playground: React.FC<PlaygroundProps> = ({
         }
       }
     } catch (error: any) {
-      console.log(error.message);
       if (
         error.message.startsWith(
           'AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:'
