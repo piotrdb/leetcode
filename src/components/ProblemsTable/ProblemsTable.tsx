@@ -221,29 +221,33 @@ function useFilterProblems(
   const [tableProblems, setTableProblems] = useState<DBProblem[]>([]);
 
   useEffect(() => {
-    let filteredProblems: DBProblem[] = [];
-    let temp: DBProblem[] = [];
-
+    let filteredProblems: DBProblem[] = problems;
+    console.log(filterPattern.searchFilter);
     if (
       filterPattern.difficulties.length === 0 &&
       filterPattern.categories.length === 0 &&
       filterPattern.searchFilter.length === 0
     ) {
-      setTableProblems(problems);
+      setTableProblems(filteredProblems);
     } else {
+      if (filterPattern.searchFilter.length > 0) {
+        filteredProblems = [...filteredProblems].filter((problem) =>
+          problem.title
+            .toLowerCase()
+            .includes(filterPattern.searchFilter.toLowerCase())
+        );
+      }
       if (filterPattern.difficulties.length > 0) {
-        temp = [...problems].filter((problem) =>
+        filteredProblems = [...filteredProblems].filter((problem) =>
           filterPattern.difficulties.includes(problem.difficulty)
         );
-        filteredProblems = [...filteredProblems, ...temp];
       }
       if (filterPattern.categories.length > 0) {
-        temp = [...problems].filter((problem) =>
+        filteredProblems = [...filteredProblems].filter((problem) =>
           filterPattern.categories.includes(problem.category)
         );
-        filteredProblems = [...filteredProblems, ...temp];
       }
-      setTableProblems(temp);
+      setTableProblems(filteredProblems);
     }
   }, [filterPattern, problems]);
 
