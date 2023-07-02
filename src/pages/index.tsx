@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ProblemsTable from '../components/ProblemsTable/ProblemsTable';
 import TopBar from '../components/TopBar/TopBar';
 import useHasMounted from '../hooks/useHasMounted';
-import { tableFilterState } from '../atoms/tableFilterAtom';
+import { tableSortState } from '../atoms/tableSortAtom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   BsSortDown,
@@ -14,13 +14,13 @@ import Filters from '../components/Filters/Filters';
 
 export default function Home() {
   const [loadingProblems, setLoadingProblems] = useState(true);
-  const setTableFilterState = useSetRecoilState(tableFilterState);
-  const tfState = useRecoilValue(tableFilterState);
+  const setTableSortState = useSetRecoilState(tableSortState);
+  const tfState = useRecoilValue(tableSortState);
   const hasMounted = useHasMounted();
 
   useEffect(() => {
-    setTableFilterState({ type: 'order', order: 'ascending' });
-  }, [setTableFilterState]);
+    setTableSortState({ type: 'order', order: 'ascending' });
+  }, [setTableSortState]);
 
   if (!hasMounted) {
     return null;
@@ -28,12 +28,12 @@ export default function Home() {
 
   const handleSortClick = (target: 'order' | 'difficulty') => {
     if (tfState.type === target) {
-      setTableFilterState((prev) => ({
+      setTableSortState((prev) => ({
         ...prev,
         order: prev.order === 'descending' ? 'ascending' : 'descending',
       }));
     } else {
-      setTableFilterState((prev) => ({
+      setTableSortState((prev) => ({
         ...prev,
         type: target,
         order: 'ascending',

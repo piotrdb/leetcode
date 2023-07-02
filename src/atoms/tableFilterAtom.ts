@@ -1,16 +1,26 @@
 import {atom} from 'recoil';
 
 export type TableFilterState = {
-    type: 'order' | 'difficulty',
-    order: 'ascending' | 'descending',
+    categories: string[];
+    difficulties: string[];
+    statuses: string[];
+    categoriesDropdownOpen: boolean;
+    difficultiesDropdownOpen: boolean;
+    statusesDropdownOpen: boolean;
+    searchFilter: string;
 }
 
 const initialTableFilterState: TableFilterState = {
-    type: 'order',
-    order: 'ascending'
+    categories: [],
+    difficulties: [],
+    statuses: [],
+    categoriesDropdownOpen: false,
+    difficultiesDropdownOpen: false,
+    statusesDropdownOpen: false,
+    searchFilter: '',
 }
 
 export const tableFilterState = atom<TableFilterState>({
-    key: 'sortedTableState',
+    key: 'tableFilterState',
     default: initialTableFilterState,
 })

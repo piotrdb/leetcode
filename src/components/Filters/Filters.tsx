@@ -1,5 +1,7 @@
+import { tableFilterState } from '@/src/atoms/tableFilterAtom';
 import React, { useEffect, useState } from 'react';
 import { BsCheckLg, BsChevronDown } from 'react-icons/bs';
+import { useSetRecoilState } from 'recoil';
 
 type FiltersProps = {};
 
@@ -26,7 +28,7 @@ interface IFilters {
   categoriesDropdownOpen: boolean;
   difficultiesDropdownOpen: boolean;
   statusesDropdownOpen: boolean;
-  searchFilter?: string;
+  searchFilter: string;
 }
 
 const Filters: React.FC<FiltersProps> = () => {
@@ -37,8 +39,10 @@ const Filters: React.FC<FiltersProps> = () => {
     categoriesDropdownOpen: false,
     difficultiesDropdownOpen: false,
     statusesDropdownOpen: false,
+    searchFilter: '',
   });
   const [searchInput, setSearchInput] = useState('');
+  const setTableFilterState = useSetRecoilState(tableFilterState);
 
   const handleClickCategoryDropdown = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -78,7 +82,12 @@ const Filters: React.FC<FiltersProps> = () => {
 
   useEffect(() => {
     setFilters({ ...filters, searchFilter: searchInput });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
+
+  useEffect(() => {
+    setTableFilterState(filters);
+  }, [setTableFilterState, filters]);
 
   return (
     <div className="w-full max-w-[1200px] mx-auto my-10 flex gap-5">
