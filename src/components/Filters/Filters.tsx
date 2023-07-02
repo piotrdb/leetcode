@@ -1,6 +1,7 @@
 import { tableFilterState } from '@/src/atoms/tableFilterAtom';
 import React, { useEffect, useState } from 'react';
 import { BsCheckLg, BsChevronDown } from 'react-icons/bs';
+import { BiReset } from 'react-icons/bi';
 import { useSetRecoilState } from 'recoil';
 
 type FiltersProps = {};
@@ -77,6 +78,19 @@ const Filters: React.FC<FiltersProps> = () => {
       statusesDropdownOpen: !filters.statusesDropdownOpen,
       categoriesDropdownOpen: false,
       difficultiesDropdownOpen: false,
+    });
+  };
+
+  const resetFilters = () => {
+    setSearchInput('');
+    setFilters({
+      categories: [],
+      difficulties: [],
+      statuses: [],
+      categoriesDropdownOpen: false,
+      difficultiesDropdownOpen: false,
+      statusesDropdownOpen: false,
+      searchFilter: '',
     });
   };
 
@@ -198,11 +212,18 @@ const Filters: React.FC<FiltersProps> = () => {
           </ul>
         )}
       </div>
+      <button
+        onClick={resetFilters}
+        className="relative cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3"
+      >
+        <BiReset className="w-6 h-6" />
+      </button>
       <div className="relative w-[250px] rounded flex-1 bg-dark-layer-1 overflow-auto">
         <input
           type="text"
           name="searchFilter"
           id="searchFilter"
+          value={searchInput}
           placeholder="Search..."
           className="border-2 outline-none sm:text-sm md:text-md rounded focus:gray-500 focus:border-gray-500 block w-full py-1.5 px-2.5 bg-[rgb(47,47,47)] border-gray-700 placeholder-gray-300 text-gray-100 transition-all duration-300"
           onChange={(e) => setSearchInput(e.target.value)}
