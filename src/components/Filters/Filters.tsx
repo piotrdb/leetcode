@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCheckLg, BsChevronDown } from 'react-icons/bs';
 
 type FiltersProps = {};
@@ -26,6 +26,7 @@ interface IFilters {
   categoriesDropdownOpen: boolean;
   difficultiesDropdownOpen: boolean;
   statusesDropdownOpen: boolean;
+  searchFilter?: string;
 }
 
 const Filters: React.FC<FiltersProps> = () => {
@@ -37,6 +38,7 @@ const Filters: React.FC<FiltersProps> = () => {
     difficultiesDropdownOpen: false,
     statusesDropdownOpen: false,
   });
+  const [searchInput, setSearchInput] = useState('');
 
   const handleClickCategoryDropdown = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -73,6 +75,10 @@ const Filters: React.FC<FiltersProps> = () => {
       difficultiesDropdownOpen: false,
     });
   };
+
+  useEffect(() => {
+    setFilters({ ...filters, searchFilter: searchInput });
+  }, [searchInput]);
 
   return (
     <div className="w-full max-w-[1200px] mx-auto my-10 flex gap-5">
@@ -159,7 +165,7 @@ const Filters: React.FC<FiltersProps> = () => {
         </button>
         {filters.statusesDropdownOpen && (
           <ul
-            className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg   w-full bg-dark-layer-1"
+            className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg  w-full bg-dark-layer-1"
             style={{
               filter:
                 'drop-shadow(rgba(0, 0, 0, 0.04) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.12) 0px 6px 16px)',
@@ -182,6 +188,16 @@ const Filters: React.FC<FiltersProps> = () => {
             ))}
           </ul>
         )}
+      </div>
+      <div className="relative w-[250px] rounded flex-1 bg-dark-layer-1 overflow-auto">
+        <input
+          type="text"
+          name="searchFilter"
+          id="searchFilter"
+          placeholder="Search..."
+          className="border-2 outline-none sm:text-sm md:text-md rounded focus:gray-500 focus:border-gray-500 block w-full py-1.5 px-2.5 bg-[rgb(47,47,47)] border-gray-700 placeholder-gray-300 text-gray-100 transition-all duration-300"
+          onChange={(e) => setSearchInput(e.target.value)}
+        ></input>
       </div>
     </div>
   );
