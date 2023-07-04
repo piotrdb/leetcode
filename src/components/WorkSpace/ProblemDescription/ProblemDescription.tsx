@@ -1,14 +1,13 @@
 import { auth, firestore } from '@/src/firebase/firebase';
-import { DBProblem, Problem } from '@/src/utils/types/problem';
+import { Problem } from '@/src/utils/types/problem';
 import {
   arrayRemove,
   arrayUnion,
   doc,
-  getDoc,
   runTransaction,
   updateDoc,
 } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   AiFillLike,
   AiFillDislike,

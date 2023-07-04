@@ -1,5 +1,4 @@
 import { auth } from '@/src/firebase/firebase';
-import { sign } from 'crypto';
 import React from 'react';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { FiLogOut } from 'react-icons/fi';

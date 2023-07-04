@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CgClose } from 'react-icons/cg';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import Login from './Login';
