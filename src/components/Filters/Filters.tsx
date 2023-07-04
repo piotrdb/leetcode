@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { BsCheckLg, BsChevronDown } from 'react-icons/bs';
 import { BiReset } from 'react-icons/bi';
 import { useSetRecoilState } from 'recoil';
+import FiltersList from './FiltersList';
 
 type FiltersProps = {};
 
@@ -104,131 +105,136 @@ const Filters: React.FC<FiltersProps> = () => {
   }, [setTableFilterState, filters]);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto my-10 flex gap-5">
-      <div className="relative w-[250px]">
-        <button
-          onClick={handleClickCategoryDropdown}
-          className="flex cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3 w-full justify-between"
-          type="button"
-        >
-          Category
-          <BsChevronDown />
-        </button>
-        {filters.categoriesDropdownOpen && (
-          <ul
-            className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg   w-full bg-dark-layer-1"
-            style={{
-              filter:
-                'drop-shadow(rgba(0, 0, 0, 0.04) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.12) 0px 6px 16px)',
-            }}
+    <div className="w-full max-w-[1200px] mt-10 mx-auto">
+      <div className="flex gap-5 mb-5 flex-wrap">
+        <div className="relative w-[22%] min-w-[200px]">
+          <button
+            onClick={handleClickCategoryDropdown}
+            className="flex cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3 w-full justify-between"
+            type="button"
           >
-            {CATEGORY_FILTERS.map((category, idx) => (
-              <FilterListItem
-                key={idx}
-                category={category}
-                selectedOptions={filters.categories}
-                handleCategoryClick={(category) => {
-                  setFilters((prevState) => ({
-                    ...prevState,
-                    categories: prevState.categories.includes(category)
-                      ? prevState.categories.filter((item) => item != category)
-                      : [...prevState.categories, category],
-                  }));
-                }}
-              />
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="relative w-[250px]">
-        <button
-          onClick={handleClickDifficultyDropdown}
-          className="flex cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3 w-full justify-between"
-          type="button"
-        >
-          Difficulty
-          <BsChevronDown />
-        </button>
-        {filters.difficultiesDropdownOpen && (
-          <ul
-            className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg   w-full bg-dark-layer-1"
-            style={{
-              filter:
-                'drop-shadow(rgba(0, 0, 0, 0.04) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.12) 0px 6px 16px)',
-            }}
+            Category
+            <BsChevronDown />
+          </button>
+          {filters.categoriesDropdownOpen && (
+            <ul
+              className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg  w-full bg-dark-layer-1"
+              style={{
+                filter:
+                  'drop-shadow(rgba(0, 0, 0, 0.04) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.12) 0px 6px 16px)',
+              }}
+            >
+              {CATEGORY_FILTERS.map((category, idx) => (
+                <FilterListItem
+                  key={idx}
+                  category={category}
+                  selectedOptions={filters.categories}
+                  handleCategoryClick={(category) => {
+                    setFilters((prevState) => ({
+                      ...prevState,
+                      categories: prevState.categories.includes(category)
+                        ? prevState.categories.filter(
+                            (item) => item != category
+                          )
+                        : [...prevState.categories, category],
+                    }));
+                  }}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="relative w-[22%] min-w-[200px]">
+          <button
+            onClick={handleClickDifficultyDropdown}
+            className="flex cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3 w-full justify-between"
+            type="button"
           >
-            {DIFFICULTY_FILTERS.map((difficulty, idx) => (
-              <FilterListItem
-                key={idx}
-                difficulty={difficulty}
-                selectedOptions={filters.difficulties}
-                handleDifficultyClick={(difficulty) => {
-                  setFilters((prevState) => ({
-                    ...prevState,
-                    difficulties: prevState.difficulties.includes(difficulty)
-                      ? prevState.difficulties.filter(
-                          (item) => item != difficulty
-                        )
-                      : [...prevState.difficulties, difficulty],
-                  }));
-                }}
-              />
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="relative w-[250px]">
-        <button
-          onClick={handleClickStatusDropdown}
-          className="flex cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3 w-full justify-between"
-          type="button"
-        >
-          Status
-          <BsChevronDown />
-        </button>
-        {filters.statusesDropdownOpen && (
-          <ul
-            className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg  w-full bg-dark-layer-1"
-            style={{
-              filter:
-                'drop-shadow(rgba(0, 0, 0, 0.04) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.12) 0px 6px 16px)',
-            }}
+            Difficulty
+            <BsChevronDown />
+          </button>
+          {filters.difficultiesDropdownOpen && (
+            <ul
+              className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg   w-full bg-dark-layer-1"
+              style={{
+                filter:
+                  'drop-shadow(rgba(0, 0, 0, 0.04) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.12) 0px 6px 16px)',
+              }}
+            >
+              {DIFFICULTY_FILTERS.map((difficulty, idx) => (
+                <FilterListItem
+                  key={idx}
+                  difficulty={difficulty}
+                  selectedOptions={filters.difficulties}
+                  handleDifficultyClick={(difficulty) => {
+                    setFilters((prevState) => ({
+                      ...prevState,
+                      difficulties: prevState.difficulties.includes(difficulty)
+                        ? prevState.difficulties.filter(
+                            (item) => item != difficulty
+                          )
+                        : [...prevState.difficulties, difficulty],
+                    }));
+                  }}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="relative w-[22%] min-w-[200px]">
+          <button
+            onClick={handleClickStatusDropdown}
+            className="flex cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3 w-full justify-between"
+            type="button"
           >
-            {STATUS_FILTERS.map((status, idx) => (
-              <FilterListItem
-                key={idx}
-                status={status}
-                selectedOptions={filters.statuses}
-                handleStatusClick={(status) => {
-                  setFilters((prevState) => ({
-                    ...prevState,
-                    statuses: prevState.statuses.includes(status)
-                      ? prevState.statuses.filter((item) => item != status)
-                      : [...prevState.statuses, status],
-                  }));
-                }}
-              />
-            ))}
-          </ul>
-        )}
+            Status
+            <BsChevronDown />
+          </button>
+          {filters.statusesDropdownOpen && (
+            <ul
+              className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg  w-full bg-dark-layer-1"
+              style={{
+                filter:
+                  'drop-shadow(rgba(0, 0, 0, 0.04) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.12) 0px 6px 16px)',
+              }}
+            >
+              {STATUS_FILTERS.map((status, idx) => (
+                <FilterListItem
+                  key={idx}
+                  status={status}
+                  selectedOptions={filters.statuses}
+                  handleStatusClick={(status) => {
+                    setFilters((prevState) => ({
+                      ...prevState,
+                      statuses: prevState.statuses.includes(status)
+                        ? prevState.statuses.filter((item) => item != status)
+                        : [...prevState.statuses, status],
+                    }));
+                  }}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
+        <button
+          onClick={resetFilters}
+          className="relative cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3"
+        >
+          <BiReset className="w-6 h-6" />
+        </button>
+        <div className="relative w-[22%] min-w-[200px] rounded flex-1 bg-dark-layer-1 overflow-auto">
+          <input
+            type="text"
+            name="searchFilter"
+            id="searchFilter"
+            value={searchInput}
+            placeholder="Search..."
+            className="border-2 outline-none sm:text-sm md:text-md rounded focus:gray-500 focus:border-gray-500 block w-full py-1.5 px-2.5 bg-[rgb(47,47,47)] border-gray-700 placeholder-gray-300 text-gray-100 transition-all duration-300"
+            onChange={(e) => setSearchInput(e.target.value)}
+          ></input>
+        </div>
       </div>
-      <button
-        onClick={resetFilters}
-        className="relative cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3"
-      >
-        <BiReset className="w-6 h-6" />
-      </button>
-      <div className="relative w-[250px] rounded flex-1 bg-dark-layer-1 overflow-auto">
-        <input
-          type="text"
-          name="searchFilter"
-          id="searchFilter"
-          value={searchInput}
-          placeholder="Search..."
-          className="border-2 outline-none sm:text-sm md:text-md rounded focus:gray-500 focus:border-gray-500 block w-full py-1.5 px-2.5 bg-[rgb(47,47,47)] border-gray-700 placeholder-gray-300 text-gray-100 transition-all duration-300"
-          onChange={(e) => setSearchInput(e.target.value)}
-        ></input>
-      </div>
+      <FiltersList />
     </div>
   );
 };
