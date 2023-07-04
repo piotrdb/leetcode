@@ -185,6 +185,3 @@ const Playground: React.FC<PlaygroundProps> = ({
 };
 
 export default Playground;
-function setSolved(arg0: boolean) {
-  throw new Error('Function not implemented.');
-}

@@ -22,6 +22,8 @@ import CircleSkeleton from '../../Skeletons/RectangleSkeleton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
+import useGetCurrentProblem from '@/src/hooks/useGetCurrentProblem';
+import useGetUserProblemData from '@/src/hooks/useGetUserProblemData';
 
 type ProblemDescriptionProps = {
   problem: Problem;
@@ -329,78 +331,5 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
     </div>
   );
 };
+
 export default ProblemDescription;
-
-function useGetCurrentProblem(problemId: string) {
-  const [currentProblem, setCurrentProblem] = useState<DBProblem | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [problemDifficultyClass, setProblemDifficultyClass] = useState('');
-  useEffect(() => {
-    const getCurrentProblem = async () => {
-      setLoading(true);
-      const docRef = doc(firestore, 'problems', problemId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const problem = docSnap.data();
-        setCurrentProblem({ id: docSnap.id, ...problem } as DBProblem);
-        setProblemDifficultyClass(
-          problem.difficulty === 'Easy'
-            ? 'bg-olive text-olive'
-            : problem.difficulty === 'Medium'
-            ? 'bg-dark-yellow text-dark-yellow'
-            : 'bg-dark-pink text-dark-pink'
-        );
-        setLoading(false);
-      }
-    };
-    getCurrentProblem();
-  }, [problemId]);
-
-  return { currentProblem, loading, problemDifficultyClass, setCurrentProblem };
-}
-
-function useGetUserProblemData(problemId: string) {
-  const [usersData, setUsersData] = useState({
-    liked: false,
-    disliked: false,
-    starred: false,
-    solved: false,
-  });
-  const [user] = useAuthState(auth);
-
-  useEffect(() => {
-    const getUsersProblemData = async () => {
-      const userRef = doc(firestore, 'users', user!.uid);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const data = userSnap.data();
-        const {
-          likedProblems,
-          dislikedProblems,
-          starredProblems,
-          solvedProblems,
-        } = data;
-        setUsersData({
-          liked: likedProblems.includes(problemId),
-          disliked: dislikedProblems.includes(problemId),
-          starred: starredProblems.includes(problemId),
-          solved: solvedProblems.includes(problemId),
-        });
-      }
-    };
-
-    if (user) {
-      getUsersProblemData();
-    }
-
-    return () =>
-      setUsersData({
-        liked: false,
-        disliked: false,
-        starred: false,
-        solved: false,
-      });
-  }, [problemId, user]);
-
-  return { ...usersData, setUsersData };
-}

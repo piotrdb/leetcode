@@ -12,7 +12,7 @@ import Timer from '../Timer/Timer';
 import { useRouter } from 'next/router';
 import { problemsArray } from '@/src/utils/problems';
 import { Problem } from '@/src/utils/types/problem';
-import { doc, getDoc } from 'firebase/firestore';
+import useGetUserDisplayName from '@/src/hooks/useGetUserDisplayName';
 
 type TopBarProps = {
   problemPage?: boolean;
@@ -22,7 +22,7 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
   const [user, userLoading] = useAuthState(auth);
   const router = useRouter();
   const setAuthModalState = useSetRecoilState(authModalState);
-  const displayName = useGetDisplayName();
+  const displayName = useGetUserDisplayName();
 
   const handleProblemChange = (isForward: boolean) => {
     const { order } = problemsArray[router.query.pid as string] as Problem;
@@ -148,25 +148,3 @@ const TopBar: React.FC<TopBarProps> = ({ problemPage }) => {
   );
 };
 export default TopBar;
-
-function useGetDisplayName() {
-  const [displayName, setDisplayName] = useState<string>('');
-  const [user] = useAuthState(auth);
-
-  useEffect(() => {
-    const getDisplayName = async () => {
-      const userRef = doc(firestore, 'users', user!.uid);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        setDisplayName(userDoc.data().displayName);
-      }
-    };
-
-    if (user) {
-      getDisplayName();
-    }
-  }, [user]);
-
-  return displayName;
-}

@@ -4,31 +4,16 @@ import { AiFillYoutube } from 'react-icons/ai';
 import { CgClose } from 'react-icons/cg';
 import Link from 'next/link';
 import YouTube from 'react-youtube';
-import {
-  collection,
-  query,
-  orderBy,
-  getDocs,
-  doc,
-  getDoc,
-} from 'firebase/firestore';
-import { auth, firestore } from '@/src/firebase/firebase';
-import { DBProblem } from '@/src/utils/types/problem';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRecoilValue } from 'recoil';
 import { tableSortState } from '@/src/atoms/tableSortAtom';
-import {
-  tableFilterState,
-  TableFilterState,
-} from '@/src/atoms/tableFilterAtom';
+import { tableFilterState } from '@/src/atoms/tableFilterAtom';
+import useFilterProblems from '@/src/hooks/useFilterProblems';
+import useGetProblems from '@/src/hooks/useGetProblems';
+import useGetSolvedProblems from '@/src/hooks/useGetSolvedProblems';
+import useSortProblems from '@/src/hooks/useSortProblems';
 
 type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-type SortFilter = {
-  type: 'order' | 'difficulty';
-  order: 'ascending' | 'descending';
 };
 
 const ProblemsTable: React.FC<ProblemsTableProps> = ({
@@ -164,138 +149,3 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
 };
 
 export default ProblemsTable;
-
-function useGetProblems(
-  setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>
-) {
-  const [problems, setProblems] = useState<DBProblem[]>([]);
-
-  useEffect(() => {
-    const getProblems = async () => {
-      setLoadingProblems(true);
-      const q = query(
-        collection(firestore, 'problems'),
-        orderBy('order', 'asc')
-      );
-      const temp: DBProblem[] = [];
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        temp.push({ id: doc.id, ...doc.data() } as DBProblem);
-      });
-      setProblems(temp);
-      setLoadingProblems(false);
-    };
-
-    getProblems();
-  }, [setLoadingProblems]);
-
-  return problems;
-}
-
-function useGetSolvedProblems() {
-  const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
-  const [user] = useAuthState(auth);
-
-  useEffect(() => {
-    const getSolvedProblems = async () => {
-      const userRef = doc(firestore, 'users', user!.uid);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        setSolvedProblems(userDoc.data().solvedProblems);
-      }
-    };
-
-    if (user) {
-      getSolvedProblems();
-    }
-  }, [user]);
-
-  return solvedProblems;
-}
-
-function useFilterProblems(
-  filterPattern: TableFilterState,
-  problems: DBProblem[]
-) {
-  const [tableProblems, setTableProblems] = useState<DBProblem[]>([]);
-
-  useEffect(() => {
-    let filteredProblems: DBProblem[] = problems;
-    if (
-      filterPattern.difficulties.length === 0 &&
-      filterPattern.categories.length === 0 &&
-      filterPattern.searchFilter.length === 0
-    ) {
-      setTableProblems(filteredProblems);
-    } else {
-      if (filterPattern.searchFilter.length > 0) {
-        filteredProblems = [...filteredProblems].filter((problem) =>
-          problem.title
-            .toLowerCase()
-            .includes(filterPattern.searchFilter.toLowerCase())
-        );
-      }
-      if (filterPattern.difficulties.length > 0) {
-        filteredProblems = [...filteredProblems].filter((problem) =>
-          filterPattern.difficulties.includes(problem.difficulty)
-        );
-      }
-      if (filterPattern.categories.length > 0) {
-        filteredProblems = [...filteredProblems].filter((problem) =>
-          filterPattern.categories.includes(problem.category)
-        );
-      }
-      setTableProblems(filteredProblems);
-    }
-  }, [filterPattern, problems]);
-
-  return tableProblems;
-}
-
-function useSortProblems(sortFilter: SortFilter, problems: DBProblem[]) {
-  const [tableProblems, setTableProblems] = useState<DBProblem[]>([]);
-
-  useEffect(() => {
-    let temp: DBProblem[] = [];
-    const sortMap = {
-      Easy: 0,
-      Medium: 1,
-      Hard: 2,
-    };
-
-    if (sortFilter.type === 'order' && sortFilter.order === 'ascending') {
-      temp = [...problems].sort((a, b) =>
-        a.order > b.order ? 1 : b.order > a.order ? -1 : 0
-      );
-    } else if (
-      sortFilter.type === 'order' &&
-      sortFilter.order === 'descending'
-    ) {
-      temp = [...problems].sort((a, b) =>
-        a.order < b.order ? 1 : b.order < a.order ? -1 : 0
-      );
-    } else if (
-      sortFilter.type === 'difficulty' &&
-      sortFilter.order === 'ascending'
-    ) {
-      temp = [...problems].sort(
-        (a, b) =>
-          sortMap[a.difficulty as keyof typeof sortMap] -
-          sortMap[b.difficulty as keyof typeof sortMap]
-      );
-    } else if (
-      sortFilter.type === 'difficulty' &&
-      sortFilter.order === 'descending'
-    ) {
-      temp = [...problems].sort(
-        (a, b) =>
-          sortMap[b.difficulty as keyof typeof sortMap] -
-          sortMap[a.difficulty as keyof typeof sortMap]
-      );
-    }
-    setTableProblems(temp);
-  }, [problems, sortFilter]);
-
-  return tableProblems;
-}
