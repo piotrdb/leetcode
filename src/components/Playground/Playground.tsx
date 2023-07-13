@@ -30,7 +30,7 @@ const Playground: React.FC<PlaygroundProps> = ({
   setSuccess,
   setSolved,
 }) => {
-  const [activeTestCaseId, setActiveTestCaseId] = useState<number>(1);
+  const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
   const [settings, setSettings] = useState({
     fontSize: '16px',
     settingsModalOpen: false,
@@ -100,6 +100,7 @@ const Playground: React.FC<PlaygroundProps> = ({
   };
 
   useEffect(() => {
+    setActiveTestCaseId(0);
     const code = localStorage.getItem(`code-${pid}`);
     if (user) {
       setUserCode(code ? JSON.parse(code) : problem.starterCode);
@@ -168,13 +169,17 @@ const Playground: React.FC<PlaygroundProps> = ({
               input:
             </p>
             <div className="w-full text-md cursor-text rounded-lg border mt-2 px-3 py-[10px] bg-dark-fill-3 border-transparent text-white">
-              {problem.examples[activeTestCaseId].inputText}
+              {problem.examples[activeTestCaseId]
+                ? problem.examples[activeTestCaseId].inputText
+                : ''}
             </div>
             <p className="text-lg font-medium mt-4 text-white capitalize">
               output:
             </p>
             <div className="w-full text-md capitalize cursor-text rounded-lg border mt-2 px-3 py-[10px] bg-dark-fill-3 border-transparent text-white">
-              {problem.examples[activeTestCaseId].outputText}
+              {problem.examples[activeTestCaseId]
+                ? problem.examples[activeTestCaseId].outputText
+                : ''}
             </div>
           </div>
         </div>
