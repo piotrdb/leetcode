@@ -4,9 +4,11 @@ This LeetCode clone application is a replica of the popular LeetCode.com platfor
 
 The application enables users to browse and solve various programming tasks from different domains, such as algorithms, data structures, mathematics, databases, etc. Users can select tasks, write and submit their solutions, and then receive feedback on their corectness.
 
-## Demo link
+## Demo and Video link
 
 https://leetcode-orcin.vercel.app
+
+https://youtu.be/_LuVzCwwvrk
 
 ## Requirements
 
