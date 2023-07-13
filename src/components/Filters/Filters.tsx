@@ -2,7 +2,7 @@ import { tableFilterState } from '@/src/atoms/tableFilterAtom';
 import React, { useEffect, useState } from 'react';
 import { BsCheckLg, BsChevronDown } from 'react-icons/bs';
 import { BiReset } from 'react-icons/bi';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import FiltersList from './FiltersList';
 
 type FiltersProps = {};
@@ -34,27 +34,39 @@ interface IFilters {
 }
 
 const Filters: React.FC<FiltersProps> = () => {
-  const [filters, setFilters] = useState<IFilters>({
-    categories: [],
-    difficulties: [],
-    statuses: [],
-    categoriesDropdownOpen: false,
-    difficultiesDropdownOpen: false,
-    statusesDropdownOpen: false,
-    searchFilter: '',
-  });
+  // const [filters, setTableFilterState] = useState<IFilters>({
+  //   categories: [],
+  //   difficulties: [],
+  //   statuses: [],
+  //   categoriesDropdownOpen: false,
+  //   difficultiesDropdownOpen: false,
+  //   statusesDropdownOpen: false,
+  //   searchFilter: '',
+  // });
   const [searchInput, setSearchInput] = useState('');
+  const {
+    categories,
+    difficulties,
+    statuses,
+    categoriesDropdownOpen,
+    difficultiesDropdownOpen,
+    statusesDropdownOpen,
+    searchFilter,
+  } = useRecoilValue(tableFilterState);
   const setTableFilterState = useSetRecoilState(tableFilterState);
 
   const handleClickCategoryDropdown = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    setFilters({
-      ...filters,
-      categoriesDropdownOpen: !filters.categoriesDropdownOpen,
+    setTableFilterState({
+      categories,
+      difficulties,
+      statuses,
+      categoriesDropdownOpen: !categoriesDropdownOpen,
       difficultiesDropdownOpen: false,
       statusesDropdownOpen: false,
+      searchFilter,
     });
   };
 
@@ -62,11 +74,14 @@ const Filters: React.FC<FiltersProps> = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    setFilters({
-      ...filters,
-      difficultiesDropdownOpen: !filters.difficultiesDropdownOpen,
+    setTableFilterState({
+      categories,
+      difficulties,
+      statuses,
       categoriesDropdownOpen: false,
+      difficultiesDropdownOpen: !difficultiesDropdownOpen,
       statusesDropdownOpen: false,
+      searchFilter,
     });
   };
 
@@ -74,17 +89,20 @@ const Filters: React.FC<FiltersProps> = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    setFilters({
-      ...filters,
-      statusesDropdownOpen: !filters.statusesDropdownOpen,
+    setTableFilterState({
+      categories,
+      difficulties,
+      statuses,
       categoriesDropdownOpen: false,
       difficultiesDropdownOpen: false,
+      statusesDropdownOpen: !statusesDropdownOpen,
+      searchFilter,
     });
   };
 
-  const resetFilters = () => {
+  const resetTableFilterState = () => {
     setSearchInput('');
-    setFilters({
+    setTableFilterState({
       categories: [],
       difficulties: [],
       statuses: [],
@@ -96,13 +114,17 @@ const Filters: React.FC<FiltersProps> = () => {
   };
 
   useEffect(() => {
-    setFilters({ ...filters, searchFilter: searchInput });
+    setTableFilterState({
+      categories,
+      difficulties,
+      statuses,
+      categoriesDropdownOpen,
+      difficultiesDropdownOpen,
+      statusesDropdownOpen,
+      searchFilter: searchInput,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
-
-  useEffect(() => {
-    setTableFilterState(filters);
-  }, [setTableFilterState, filters]);
 
   return (
     <div className="w-full max-w-[1200px] mt-10 mx-auto">
@@ -116,7 +138,7 @@ const Filters: React.FC<FiltersProps> = () => {
             Category
             <BsChevronDown />
           </button>
-          {filters.categoriesDropdownOpen && (
+          {categoriesDropdownOpen && (
             <ul
               className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg  w-full bg-dark-layer-1"
               style={{
@@ -128,9 +150,9 @@ const Filters: React.FC<FiltersProps> = () => {
                 <FilterListItem
                   key={idx}
                   category={category}
-                  selectedOptions={filters.categories}
+                  selectedOptions={categories}
                   handleCategoryClick={(category) => {
-                    setFilters((prevState) => ({
+                    setTableFilterState((prevState) => ({
                       ...prevState,
                       categories: prevState.categories.includes(category)
                         ? prevState.categories.filter(
@@ -153,7 +175,7 @@ const Filters: React.FC<FiltersProps> = () => {
             Difficulty
             <BsChevronDown />
           </button>
-          {filters.difficultiesDropdownOpen && (
+          {difficultiesDropdownOpen && (
             <ul
               className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg   w-full bg-dark-layer-1"
               style={{
@@ -165,9 +187,9 @@ const Filters: React.FC<FiltersProps> = () => {
                 <FilterListItem
                   key={idx}
                   difficulty={difficulty}
-                  selectedOptions={filters.difficulties}
+                  selectedOptions={difficulties}
                   handleDifficultyClick={(difficulty) => {
-                    setFilters((prevState) => ({
+                    setTableFilterState((prevState) => ({
                       ...prevState,
                       difficulties: prevState.difficulties.includes(difficulty)
                         ? prevState.difficulties.filter(
@@ -190,7 +212,7 @@ const Filters: React.FC<FiltersProps> = () => {
             Status
             <BsChevronDown />
           </button>
-          {filters.statusesDropdownOpen && (
+          {statusesDropdownOpen && (
             <ul
               className="absolute mt-1 max-h-56 overflow-auto rounded-lg p-2 z-50 focus:outline-none shadow-lg  w-full bg-dark-layer-1"
               style={{
@@ -202,9 +224,9 @@ const Filters: React.FC<FiltersProps> = () => {
                 <FilterListItem
                   key={idx}
                   status={status}
-                  selectedOptions={filters.statuses}
+                  selectedOptions={statuses}
                   handleStatusClick={(status) => {
-                    setFilters((prevState) => ({
+                    setTableFilterState((prevState) => ({
                       ...prevState,
                       statuses: prevState.statuses.includes(status)
                         ? prevState.statuses.filter((item) => item != status)
@@ -217,7 +239,7 @@ const Filters: React.FC<FiltersProps> = () => {
           )}
         </div>
         <button
-          onClick={resetFilters}
+          onClick={resetTableFilterState}
           className="relative cursor-pointer items-center rounded px-3 py-1.5 text-left focus:outline-none whitespace-nowrap text-dark-label-2 bg-dark-fill-3 hover:bg-dark-fill-2 active:bg-dark-fill-3"
         >
           <BiReset className="w-6 h-6" />
